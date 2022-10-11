@@ -5,27 +5,46 @@ import pentagon from '../images/bg-pentagon.svg';
 import scissors from '../images/icon-scissors.svg';
 import paper from '../images/icon-paper.svg';
 import rock from '../images/icon-rock.svg';
-import spock from '../images/icon-spock.svg';
 import lizard from '../images/icon-lizard.svg';
+import spock from '../images/icon-spock.svg';
+// import Game_icon_container from './game_icon_container';
 
 const initalScore = 0;
 
-const arrayOfIcons = ['rock', 'spock', 'scissors', 'paper', 'lizard'];
+const arrayOfIcons = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
+const arrayOfRotations = ['rotateZ(-90deg)', 'rotateZ(-180deg)', 'rotateZ(-240deg)', 'rotateZ(-300deg)', 'rotateZ(-300deg)']
 let tempComputerPick, computerPick;
 let userInput;
 
 export default function Main_page() {
     const [score, setScore] = useState(initalScore);
     const [showRules, setShowRules] = useState(false);
+    const [result, setResult] = useState(undefined);
+    const [icon, setIcon] = useState(undefined);
+    const [transformValue, setTransformValue] = useState(undefined);
+    const [transforIconValue, setTransformIconValue] = useState(undefined);
+
+    useEffect(() => {
+        const playerScore = localStorage.getItem('playerScore');
+        if (playerScore != null){
+            setScore(playerScore);
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('playerScore', score);
+    }, [score])
+
+    useEffect(() => {
+    }, [icon]);
 
     const setShowRulesFunction = () => {
         setShowRules(false);
     }
 
     const beginGame = (userValue) => {
-        computerPicks(userValue);
+        setIcon(userValue);
     }
-
 
     const computerPicks = (userValue) => {
         tempComputerPick = arrayOfIcons[Math.floor(Math.random()*arrayOfIcons.length)];
@@ -62,19 +81,19 @@ export default function Main_page() {
     const Lizard = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                console.log("You draw")
+                setResult("You draw")
                 break;
             case 'spock':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'scissors':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'rock':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'paper':
-                console.log("You win")
+                setResult("You win")
                 break;
         }
     }
@@ -82,19 +101,19 @@ export default function Main_page() {
     const Spock = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'spock':
-                console.log("You draw")
+                setResult("You draw")
                 break;
             case 'scissors':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'rock':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'paper':
-                console.log("You lose")
+                setResult("You lose")
                 break;
         }
     }
@@ -102,19 +121,19 @@ export default function Main_page() {
     const Scissors = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'spock':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'scissors':
-                console.log("You draw")
+                setResult("You draw")
                 break;
             case 'rock':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'paper':
-                console.log("You win")
+                setResult("You win")
                 break;
         }
     }
@@ -122,19 +141,19 @@ export default function Main_page() {
     const Rock = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'spock':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'scissors':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'rock':
-                console.log("You draw")
+                setResult("You draw")
                 break;
             case 'paper':
-                console.log("You lose")
+                setResult("You lose")
                 break;
         }
     }
@@ -142,33 +161,23 @@ export default function Main_page() {
     const Paper = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'spock':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'scissors':
-                console.log("You lose")
+                setResult("You lose")
                 break;
             case 'rock':
-                console.log("You win")
+                setResult("You win")
                 break;
             case 'paper':
-                console.log("You draw")
+                setResult("You draw")
                 break;
         }
     }
 
-    useEffect(() => {
-        const playerScore = localStorage.getItem('playerScore');
-        if (playerScore != null){
-            setScore(playerScore);
-        }
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem('playerScore', score);
-    }, [score])
 
     return (
         <>
@@ -182,33 +191,38 @@ export default function Main_page() {
                     <p>{score}</p>
                 </div>
             </div>
-            <main className='main_game'>
-                <img src={pentagon} alt="pentagon skeleton for the game element icons" id='pentagon'/>
-                <div className='game_icon_container' id='scissors' onClick={() => {userInput='scissors'; beginGame(userInput)}}>
-                    <div className='shadow'>                           
+            <main className='main_game' style={{transform: (icon == 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset'}}>
+                <img src={pentagon} alt="pentagon skeleton for the game element icons" id='pentagon' style={{display: (icon == undefined) ? 'flex' : 'none'}}/>
+                <div className='game_icon_container' id='scissors' onClick={() => {userInput='scissors'; beginGame(userInput); setTransformValue('rotateZ(-90deg)'); setTransformIconValue('rotateZ(90deg)')}} style={{display: (icon ==  'scissors' || icon == undefined) ? 'flex' : 'none'}}>
+                    <div className='shadow' style={{transform: (icon == 'scissors') ? transforIconValue : 'unset'}}>                           
                         <img src={scissors} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                         <div className='inner_circle'></div>
                     </div>
                 </div>
-                <div className='game_icon_container' id='paper' onClick={() => {userInput='paper'; beginGame(userInput)}}>
-                    <div className='shadow'>
+                <div className='game_icon_container' id='paper' onClick={() => {userInput='paper'; beginGame(userInput); setTransformValue('rotateZ(-180deg)'); setTransformIconValue('rotateZ(180deg)')}} style={{display: (icon ==  'paper' || icon == undefined) ? 'flex' : 'none'}}>
+                    <div className='shadow' style={{transform: (icon == 'paper') ? transforIconValue : 'unset'}}>
                         <img src={paper} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                         <div className='inner_circle'></div>
                     </div>
                 </div>
-                <div className='game_icon_container' id='rock' onClick={() => {userInput='rock'; beginGame(userInput)}}>
-                    <div className='shadow'>
+                <div className='game_icon_container' id='rock' onClick={() => {userInput='rock'; beginGame(userInput); beginGame(userInput); setTransformValue('rotateZ(-240deg)'); setTransformIconValue('rotateZ(240deg)')}} style={{display: (icon ==  'rock' || icon == undefined) ? 'flex' : 'none'}}>
+                    <div className='shadow' style={{transform: (icon == 'rock') ? transforIconValue : 'unset'}}>
                         <img src={rock} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                         <div className='inner_circle'></div>
                     </div>
                 </div>
-                <div className='game_icon_container' id='lizard' onClick={() => {userInput='lizard'; beginGame(userInput)}}>
-                    <div className='shadow'>
+                <div className='game_icon_container' id='lizard' onClick={() => {userInput='lizard'; beginGame(userInput); beginGame(userInput); setTransformValue('rotateZ(-300deg)'); setTransformIconValue('rotateZ(300deg)')}} style={{display: (icon ==  'lizard' || icon == undefined) ? 'flex' : 'none'}}>
+                    <div className='shadow' style={{transform: (icon == 'lizard') ? transforIconValue : 'unset'}}>
                         <img src={lizard} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                         <div className='inner_circle'></div>
                     </div>
                 </div>
-                <div className='game_icon_container'  id='spock' onClick={() => {userInput='spock'; beginGame(userInput)}}>
+                {/* {
+                    arrayOfRotations.map((e) => {
+                        return <Game_icon_container key={arrayOfIcons}/>
+                    })
+                } */}
+                <div className='game_icon_container' id='spock' onClick={() => {userInput='spock'; beginGame(userInput); beginGame(userInput)}} style={{display: (icon ==  'spock' || icon == undefined) ? 'flex' : 'none'}}>
                     <div className='shadow'>
                         <img src={spock} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                         <div className='inner_circle'></div>
