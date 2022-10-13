@@ -1,6 +1,10 @@
 @import-normalize;
 @import './rules';
 
+:root{
+  --border-radius: 7px;
+}
+
 *{
   padding: 0;
   margin: 0;
@@ -27,6 +31,7 @@ body{
   flex-direction: column;
   align-items: center;
   padding: 50px 0;
+  position: relative;
 }
 
 .main_title{
@@ -45,7 +50,7 @@ body{
   width: 120px;
   height: 40px;
   border: 1px solid white;
-  border-radius: 7px;
+  border-radius: var(--border-radius);
   color: white;
   letter-spacing: 2px;
   font-weight: 600;
@@ -109,28 +114,21 @@ body{
   color: hsl(229, 25%, 31%);
 }
 
-.main_game{
-  width: fit-content;
-  min-width: 500px;
-  height: 407px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  transition: transform .3s linear;
-}
-
 #pentagon{
-  width: 299px;
-  height: 273px;
+  /* width: 299px; */
+  /* height: 273px; */
+  width: 59.8%;
+  height: 67.1%;
   margin-bottom: 40px;
 }
 
 .game_icon_container{
   position: absolute;
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  /* width: 120px;
+  height: 120px; */
+  width: 24%;
+  height: 29.485%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -174,33 +172,93 @@ body{
   top: 5px;
 }
 
-#scissors{
+.scissors{
   background: linear-gradient(hsl(39, 89%, 49%), hsl(40, 84%, 53%));
   top: 40px;
   right: 190px;
 }
 
-#paper{
+.paper{
   background: linear-gradient(hsl(230, 89%, 62%), hsl(230, 89%, 65%));
   top: 140px;
   right: 50px;
 }
 
-#rock{
+.rock{
   background: linear-gradient(hsl(349, 71%, 52%), hsl(349, 70%, 56%));
   bottom: -10px;
   right: 110px;
 }
 
-#lizard{
+.lizard{
   background: linear-gradient(hsl(261, 73%, 60%), hsl(261, 72%, 63%));
   bottom: -10px;
   left: 110px
 }
 
-#spock{
+.spock{
   background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
   top: 140px;
   left: 50px;
+}
+
+#computer_picked{
+  top: 140px;
+}
+
+.general_container{
+  /* height: 407px; */
+  height: 75%;
+  width: fit-content;
+  min-width: 500px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  position: relative;
+}
+
+.main_game_container{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.main_game, .main_game_two{
+  width: fit-content;
+  min-width: 500px;
+  height: 407px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  transition: transform .3s linear;
+}
+
+.main_game_two{
+  position: absolute;
+  display: none;
+}
+
+.result_box{
+  width: 120px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  z-index: 2;
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: hsl(229, 25%, 31%);
+}
+
+.result_box:hover{
+  cursor: pointer;
+  box-shadow: 1px 1px 10px 5px #fff;
 }
 
