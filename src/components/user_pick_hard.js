@@ -1,9 +1,9 @@
 import React, { useEffect, useContext} from 'react';
-import { UserPickedContext } from './main_page';
+import { UserPickedContext } from './main_page(hard)';
 
 let userInput;
 
-export default function User_pick(props) {
+export default function User_pick_hard (props) {
     const [[transformValue, setTransformValue], [transformIconValue, setTransformIconValue], [icon, setIcon],
      [startGame, setStartGame]] = useContext(UserPickedContext);
 
