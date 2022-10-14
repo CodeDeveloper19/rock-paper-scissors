@@ -2,7 +2,12 @@ import React, { useState, useEffect, createContext  } from 'react';
 import Rules from './rules'
 import logo from '../images/logo-bonus.svg';
 import pentagon from '../images/bg-pentagon.svg';
-import triangle from '../images/bg-triangle.svg'
+import triangle from '../images/bg-triangle.svg';
+import scissors from '../images/icon-scissors.svg';
+import paper from '../images/icon-paper.svg';
+import rock from '../images/icon-rock.svg';
+import lizard from '../images/icon-lizard.svg';
+import spock from '../images/icon-spock.svg';
 import User_pick from './user_pick';
 import Computer_pick from './computer_pick';
 
@@ -14,31 +19,31 @@ const data = [
         id: 'scissors',
         rotation: 'rotateZ(-85.5deg)',
         antiRotation: 'rotateZ(85.5deg)',
-        imageUrl: '/static/media/icon-scissors.3b1a5d7eb0b2f1fd3e955865ec04d9ed.svg'
+        imageUrl: scissors
     }, 
     {
         id: 'paper',
         rotation: 'rotateZ(-175deg)',
         antiRotation: 'rotateZ(180deg)',
-        imageUrl: '/static/media/icon-paper.8b57a6b108c1b8ae82931a39b10f96a2.svg'
+        imageUrl: paper
     },
     {
         id: 'rock',
         rotation: 'rotateZ(-240deg)',
         antiRotation: 'rotateZ(240deg)',
-        imageUrl: '/static/media/icon-rock.476e90a9646a87bb3645d2f09f4f7fba.svg'
+        imageUrl: rock
     }, 
     {
         id: 'lizard',
         rotation: 'rotateZ(-295deg)',
         antiRotation: 'rotateZ(295deg)',
-        imageUrl: '/static/media/icon-lizard.0f83914cca1adc9454d1bdceb17610b0.svg'
+        imageUrl: lizard
     }, 
     {
         id: 'spock',
         rotation: 'rotateZ(1.5deg)',
         antiRotation: 'rotateZ(1.5deg)',
-        imageUrl: '/static/media/icon-spock.f4d7eee84cf50913d73967948d97d63a.svg'
+        imageUrl: spock
     }, 
 ]
 
@@ -177,8 +182,8 @@ export default function Main_page() {
             </div>
             <div id='controls'>
                 <button className='reset_button_container' onClick={() => {
-                    setScore(initalScore);
-                    localStorage.setItem('playerScore', initalScore);
+                    setScore(0);
+                    localStorage.setItem('playerScore', 0);
                     }}>
                     RESET
                 </button>
