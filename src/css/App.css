@@ -186,8 +186,8 @@ body{
 
 .paper, .paper_easy{
   background: linear-gradient(hsl(230, 89%, 62%), hsl(230, 89%, 65%));
-  top: 50px;
-  right: 110px;
+  top: 110px;
+  right: 75px;
 }
 
 .paper_easy{
