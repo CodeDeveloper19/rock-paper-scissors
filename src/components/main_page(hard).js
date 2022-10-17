@@ -7,7 +7,7 @@ import paper from '../images/icon-paper.svg';
 import rock from '../images/icon-rock.svg';
 import lizard from '../images/icon-lizard.svg';
 import spock from '../images/icon-spock.svg';
-import User_pick_hard from './user_pick_hard';
+import User_pick from './user_pick';
 import Computer_pick_hard from './computer_pick_hard';
 import Easy_page from './easy_page'
 
@@ -56,7 +56,11 @@ export default function Main_page() {
     const [score, setScore] = useState(initalScore);
     const [showRules, setShowRules] = useState(false);
     const [iconEasy, setIconEasy] = useState(undefined);
+    const [iconHard, setIconHard] = useState(undefined);
+    const [chosenIcon, setChosenIcon] = useState(undefined);
     const [result, setResult] = useState(undefined);
+    const [resultEasy, setResultEasy] = useState(undefined)
+    const [chosenClassName, setChosenClassName] = useState(undefined);
     const [startGame, setStartGame] = useState(undefined);
     const [computerPicked, setComputerPicked] = useState(undefined);
     const [difficulty, setDifficulty] = useState('hard');
@@ -82,7 +86,7 @@ export default function Main_page() {
     }, [score])
 
     useEffect(() => {
-    }, [iconEasy]);
+    }, [iconHard]);
 
     useEffect(() => {
         if (result != undefined){
@@ -108,6 +112,7 @@ export default function Main_page() {
         setComputerPicked(undefined);
         setStartGame(undefined);
         setIconEasy(undefined);
+        setIconHard(undefined);
         setMoveRightMainGame(undefined);
         setMoveRightMainGameTwo(undefined);
         setTransformIconValue(undefined);
@@ -148,16 +153,17 @@ export default function Main_page() {
                 <div className='overall_container' style={{right: (difficulty == 'easy' ? '500px' : '0px')}}>
                     <div className='general_container_hard'>
                         <div className='main_game_container'>
-                            <main className='main_game' style={{transform: (iconEasy == 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset',                
+                            <main className='main_game' style={{transform: (iconHard == 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset',                
                             right: (result) ? moveRightMainGame : 'unset'}}>
                             <img src={pentagon} 
                             alt="pentagon skeleton for the game element icons" id='pentagon' 
-                            style={{display: (iconEasy == undefined) ? 'flex' : 'none'}}/>
+                            style={{display: (iconHard == undefined) ? 'flex' : 'none'}}/>
                                 <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
-                                    [iconEasy, setIconEasy], [startGame, setStartGame] ]}>
+                                    [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty],
+                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon] ]}>
                                     {
                                         data.map((data) => {
-                                            return <User_pick_hard key={data.id} {...data}/>
+                                            return <User_pick key={data.id} {...data}/>
                                         })
                                     }
                                 </UserPickedContext.Provider>
@@ -167,12 +173,12 @@ export default function Main_page() {
                             left: (result) ? moveRightMainGameTwo : 'unset',
                             display: (computerPicked == undefined) ? 'none' : 'flex'}}>
                                 <ComputerPickedContext.Provider value = {[[computerPicked, setComputerPicked], 
-                                    [iconEasy, setIconEasy], 
+                                    [iconHard, setIconHard], 
                                     [transformValueComputer, setTransformValueComputer], 
                                     [transformIconValueComputer, setTransformIconValueComputer], 
                                     [moveRightMainGame, setMoveRightMainGame],
                                     [moveRightMainGameTwo, setMoveRightMainGameTwo],
-                                    [result, setResult], [startGame, setStartGame] ]}>
+                                    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName]]}>
                                         {
                                             data.map((data) => {
                                                 return <Computer_pick_hard key={data.id} {...data}/>
@@ -200,9 +206,11 @@ export default function Main_page() {
                             {resultDisplay}
                         </button>
                     </div>
-                    <EasyContext.Provider value={[[difficulty, setDifficulty]]}>
+                    <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
+                        [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty], 
+                        [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon] ]}>
                         <Easy_page />
-                    </EasyContext.Provider>
+                    </UserPickedContext.Provider>
                 </div>
             </div>
             <div id='controls'>

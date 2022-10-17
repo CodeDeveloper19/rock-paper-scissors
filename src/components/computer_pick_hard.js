@@ -6,7 +6,7 @@ export default function Computer_pick_hard (props) {
     [transformIconValueComputer, setTransformIconValueComputer], 
     [moveRightMainGame, setMoveRightMainGame],
     [moveRightMainGameTwo, setMoveRightMainGameTwo],
-    [result, setResult], [startGame, setStartGame] ] = useContext(ComputerPickedContext);
+    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName] ] = useContext(ComputerPickedContext);
 
     useEffect(() => {
         if (computerPicked != undefined){
@@ -195,7 +195,7 @@ export default function Computer_pick_hard (props) {
 
     return(
         <>
-            <div className={['game_icon_container_computer', props.id].join(' ')} style={{display: (computerPicked ==  props.id || computerPicked == undefined) ? 'flex' : 'none'}}>
+            <div className={['game_icon_container_computer', chosenClassName].join(' ')} style={{display: (computerPicked ==  props.id || computerPicked == undefined) ? 'flex' : 'none'}}>
                 <div className='shadow' style={{transform: (computerPicked == props.id) ? transformIconValueComputer : 'unset'}}>                           
                     <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                     <div className='inner_circle'></div>

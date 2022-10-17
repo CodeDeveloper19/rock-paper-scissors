@@ -173,46 +173,46 @@ body{
   height: 100%;
 }
 
-.scissors, .scissors_easy{
+.hard:nth-of-type(1), .easy:nth-of-type(1){
   background: linear-gradient(hsl(39, 89%, 49%), hsl(40, 84%, 53%));
   top: 10px;
   right: 200px;
 }
 
-.scissors_easy{
+.easy:nth-of-type(1){
   top: 15px;
   right: 90px;
 }
 
-.paper, .paper_easy{
+.hard:nth-of-type(2), .easy:nth-of-type(2){
   background: linear-gradient(hsl(230, 89%, 62%), hsl(230, 89%, 65%));
   top: 110px;
   right: 75px;
 }
 
-.paper_easy{
+.easy:nth-of-type(2){
   top: 15px;
   right: 310px;
 }
 
-.rock, .rock_easy{
+.hard:nth-of-type(3), .easy:nth-of-type(3){
   background: linear-gradient(hsl(349, 71%, 52%), hsl(349, 70%, 56%));
   bottom: 0px;
   right: 120px;
 }
 
-.rock_easy{
+.easy:nth-of-type(3){
   bottom: 25px;
   right: 200px;
 }
 
-.lizard{
+.hard:nth-of-type(4){
   background: linear-gradient(hsl(261, 73%, 60%), hsl(261, 72%, 63%));
   bottom: 0px;
   right: 275px;
 }
 
-.spock{
+.hard:nth-of-type(5){
   background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
   top: 110px;
   right: 330px;
