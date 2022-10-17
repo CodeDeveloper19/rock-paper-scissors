@@ -103,17 +103,39 @@ body{
   padding: 15px 0 10px 0;
 }
 
-.score_container p:nth-child(1){
+.score_screen{
+  width: 40px;
+  height: 46px;
+  overflow: hidden;
+}
+
+.score_container_fit{
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  transition: transform .3s linear;
+}
+
+.score_container p{
   color: var(--blue-shade);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
 }
 
-.score_container p:nth-child(2){
+.score_container_fit p{
   font-size: 40px;
   font-weight: 700;
   color: hsl(229, 25%, 31%);
+  width: 100%;
+  text-align: center;
+}
+
+.score{
+  width: 40px;
+  height: 100%;
 }
 
 #pentagon, #triangle{
@@ -137,7 +159,7 @@ body{
 
 .game_icon_container:hover{
   transform: scale(1.1);
-  box-shadow: 1px 1px 10px 5px #fff;
+  box-shadow: 1px 1px 10px 5px #fff !important;
 }
 
 .game_icon{
@@ -328,4 +350,16 @@ body{
   height: 100%;
   width: 500px;
   overflow: hidden;
+}
+
+@media only screen and (min-height: 728px){
+  #controls{
+      flex-direction: row;
+      right: unset;
+  }
+
+  .rules_button_container {
+    margin-top: unset;
+    margin-left: 20%;
+  }
 }

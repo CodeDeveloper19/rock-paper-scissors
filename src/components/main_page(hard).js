@@ -8,11 +8,11 @@ import rock from '../images/icon-rock.svg';
 import lizard from '../images/icon-lizard.svg';
 import spock from '../images/icon-spock.svg';
 import User_pick from './user_pick';
-import Computer_pick_hard from './computer_pick_hard';
-import Easy_page from './easy_page'
+import Computer_pick from './computer_pick';
+import Easy_page from './easy_page';
+import Result_box from './result_box';
 
 const initalScore = '0';
-let prevResult;
 
 const data = [
     {
@@ -51,15 +51,16 @@ export const UserPickedContext = createContext();
 export const ComputerPickedContext = createContext();
 export const RulesContext = createContext();
 export const EasyContext = createContext();
+export const ResultBoxContext = createContext();
 
 export default function Main_page() {
-    const [score, setScore] = useState(initalScore);
+    const [scoreHard, setScoreHard] = useState(initalScore);
+    const [scoreEasy, setScoreEasy] = useState(initalScore);
     const [showRules, setShowRules] = useState(false);
     const [iconEasy, setIconEasy] = useState(undefined);
     const [iconHard, setIconHard] = useState(undefined);
     const [chosenIcon, setChosenIcon] = useState(undefined);
     const [result, setResult] = useState(undefined);
-    const [resultEasy, setResultEasy] = useState(undefined)
     const [chosenClassName, setChosenClassName] = useState(undefined);
     const [startGame, setStartGame] = useState(undefined);
     const [computerPicked, setComputerPicked] = useState(undefined);
@@ -71,39 +72,65 @@ export default function Main_page() {
     const [moveRightMainGame, setMoveRightMainGame] = useState(undefined);
     const [moveRightMainGameTwo, setMoveRightMainGameTwo] = useState(undefined);
     const [resultDisplay, setResultDisplay] = useState(undefined);
+    const [resetGame, setResetGame] = useState(false);
 
     useEffect(() => {
-        const playerScore = localStorage.getItem('playerScore');
-        if (playerScore != null){
-            setScore(parseInt(playerScore));
+        const playerScoreHard = localStorage.getItem('playerScoreHard');
+        const playerScoreEasy = localStorage.getItem('playerScoreEasy');
+        if (playerScoreHard != null){
+            setScoreHard(parseInt(playerScoreHard));
+        } 
+        if (playerScoreEasy != null){
+            setScoreEasy(parseInt(playerScoreEasy));
         }
     }, [])
 
     useEffect(() => {
-        if (typeof(score) != 'string'){
-            localStorage.setItem('playerScore', score);
+        if (typeof(scoreHard) != 'string'){
+            localStorage.setItem('playerScoreHard', scoreHard);
+        } 
+        if (typeof(scoreEasy) != 'string'){
+            localStorage.setItem('playerScoreEasy', scoreEasy);
         }
-    }, [score])
+    }, [scoreHard, scoreEasy])
 
     useEffect(() => {
-    }, [iconHard]);
-
-    useEffect(() => {
-        if (result != undefined){
-            minusOrAdd();
+        if (result != undefined && difficulty == 'hard'){
+            minusOrAddHard();
+        } else if (result != undefined && difficulty == 'easy'){
+            minusOrAddEasy();
         }
         setResultDisplay(result);
-    }, [result])
+    }, [result]);
+
+    useEffect(() => {
+        refreshGame();
+    }, [difficulty]);
+
+    useEffect(() => {
+        if (resetGame){
+            refreshGame();
+            setResetGame(false)
+        }
+    }, [resetGame])
 
     const setShowRulesFunction = () => {
         setShowRules(false);
     }
 
-    const minusOrAdd = () => {
-        if (result == 'You win'){
-            setScore(score + 1);
-        } else if (result == 'You lose' && score != 0){
-            setScore(score - 1);
+    const minusOrAddHard = () => {
+        if (result == 'You win' && scoreHard <= 100){
+            setScoreHard(scoreHard + 1);
+        } else if (result == 'You lose' && scoreHard != 0){
+            setScoreHard(scoreHard - 1);
+        }
+    }
+
+    const minusOrAddEasy = () => {
+        if (result == 'You win' && scoreEasy <= 100){
+            setScoreEasy(scoreEasy + 1);
+        } else if (result == 'You lose' && scoreEasy != 0){
+            setScoreEasy(scoreEasy - 1);
         }
     }
 
@@ -130,7 +157,16 @@ export default function Main_page() {
                 </div>
                 <div className='score_container'>
                     <p>SCORE</p>
-                    <p>{score}</p>
+                    <div className='score_screen'>
+                        <div className='score_container_fit' style={{right : (difficulty == 'hard') ? '0px' : '40px'}}>
+                            <div className='score'>
+                                <p>{scoreHard}</p>
+                            </div>
+                            <div className='score'>
+                                <p>{scoreEasy}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id='difficulty_level'>
@@ -160,7 +196,7 @@ export default function Main_page() {
                             style={{display: (iconHard == undefined) ? 'flex' : 'none'}}/>
                                 <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
                                     [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty],
-                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon] ]}>
+                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result, setResult] ]}>
                                     {
                                         data.map((data) => {
                                             return <User_pick key={data.id} {...data}/>
@@ -178,45 +214,36 @@ export default function Main_page() {
                                     [transformIconValueComputer, setTransformIconValueComputer], 
                                     [moveRightMainGame, setMoveRightMainGame],
                                     [moveRightMainGameTwo, setMoveRightMainGameTwo],
-                                    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName]]}>
+                                    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName], [difficulty, setDifficulty]]}>
                                         {
                                             data.map((data) => {
-                                                return <Computer_pick_hard key={data.id} {...data}/>
+                                                return <Computer_pick key={data.id} {...data}/>
                                             })
                                         }
-                                    </ComputerPickedContext.Provider>
+                                </ComputerPickedContext.Provider>
                             </div>
                         </div>
-                        <button className='result_box' style={{display: (computerPicked == undefined) ? 'none' : 'flex'}} 
-                        onMouseEnter={() => {
-                            prevResult = result;
-                            setResultDisplay('Play Again?');
-                        }} 
-                        onMouseLeave={() => {
-                            setResultDisplay(prevResult);
-                        }}
-                        onTouchStart={() => {
-                            prevResult = result;
-                            setResultDisplay('Play Again?');
-                        }} 
-                        onTouchEnd={() => {
-                            setResultDisplay(prevResult);
-                        }}
-                        onClick={() => refreshGame()}>
-                            {resultDisplay}
-                        </button>
+                        <ResultBoxContext.Provider value={[ [computerPicked, setComputerPicked], [resultDisplay, setResultDisplay], [result, setResult], [resetGame, setResetGame] ]}>
+                            <Result_box />
+                        </ResultBoxContext.Provider>
                     </div>
                     <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
                         [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty], 
-                        [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon] ]}>
+                        [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon],
+                        [transformValueComputer, setTransformValueComputer], 
+                        [transformIconValueComputer, setTransformIconValueComputer], 
+                        [computerPicked, setComputerPicked], [moveRightMainGame, setMoveRightMainGame],
+                        [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], [resultDisplay, setResultDisplay], [resetGame, setResetGame] ]}>
                         <Easy_page />
                     </UserPickedContext.Provider>
                 </div>
             </div>
             <div id='controls'>
                 <button className='reset_button_container' onClick={() => {
-                    setScore(0);
-                    localStorage.setItem('playerScore', 0);
+                    setScoreHard(0);
+                    setScoreEasy(0);
+                    localStorage.setItem('playerScoreHard', 0);
+                    localStorage.setItem('playerScoreEasy', 0);
                     }}>
                     RESET
                 </button>
