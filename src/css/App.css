@@ -4,6 +4,7 @@
 :root{
   --border-radius: 7px;
   --blue-shade: hsl(229, 64%, 46%);
+  --transition-duration: .3s;
 }
 
 *{
@@ -59,17 +60,19 @@ body{
 }
 
 .rules_button_container{
-  margin-top: 40px;
+  margin-top: unset;
+  margin-left: 20%;
 }
 
 #controls{
   position: absolute;
-  right: 30px;
   bottom: 30px;
   height: fit-content;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  right: unset;
 }
+
 
 .rules_button_container:hover, .game_icon_container:hover, .reset_button_container:hover{
   cursor: pointer;
@@ -86,9 +89,28 @@ body{
   height: 100%;
 }
 
-.logo_container{
+.logo_container:nth-of-type(1){
   height: 100%;
   width: 95px;
+}
+
+.logo_container:nth-of-type(2){
+  height: 100%;
+  width: 130px;
+}
+
+.logo_container_fit{
+  width: fit-content;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.logo_container_screen{
+  height: 90px;
+  width: 95px;
+  overflow: hidden;
 }
 
 .score_container{
@@ -115,7 +137,7 @@ body{
   display: flex;
   flex-direction: row;
   position: relative;
-  transition: transform .3s linear;
+  transition: transform var(--transition-duration) linear;
 }
 
 .score_container p{
@@ -152,7 +174,6 @@ body{
   justify-content: center;
   align-items: center;
   transform: scale(1);
-  transition: transform .3s linear;
   border: none;
   outline: none;
 }
@@ -160,6 +181,7 @@ body{
 .game_icon_container:hover{
   transform: scale(1.1);
   box-shadow: 1px 1px 10px 5px #fff !important;
+  transition: transform var(--transition-duration) linear;
 }
 
 .game_icon{
@@ -268,7 +290,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  transition: transform .3s linear;
+  transition: transform var(--transition-duration) linear, right var(--transition-duration) linear;
 }
 
 .main_game_two{
@@ -277,23 +299,36 @@ body{
 }
 
 .result_box{
-  width: 100px;
-  height: 40px;
+  height: fit-content;
+  width: 120px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  background-color: #fff;
-  border-radius: var(--border-radius);
   z-index: 2;
-  border: none;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: hsl(229, 25%, 31%);
+  transform: translate(-50%, -45%);
 }
 
-.result_box:hover{
+.result_box p{
+  color: white;
+  font-size: 30px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.result_button{
+  margin-top: 15px;
+  width: 120px;
+  height: 35px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  color: hsl(229, 25%, 31%);
+  border: none;
+}
+
+.result_button:hover{
   cursor: pointer;
   box-shadow: 1px 1px 10px 5px #fff;
 }
@@ -330,7 +365,7 @@ body{
   position: relative;
   cursor: pointer;
   left: 35px;
-  transition: left .3s  cubic-bezier(
+  transition: left var(--transition-duration)  cubic-bezier(
     0.175, 0.885, 0.320, 1.275
   );
 }
@@ -341,7 +376,7 @@ body{
   display: flex;
   flex-direction: row;
   position: relative;
-  transition: right .3s  cubic-bezier(
+  transition: right var(--transition-duration)  cubic-bezier(
     0.175, 0.885, 0.320, 1.275
   );
 }
@@ -352,14 +387,26 @@ body{
   overflow: hidden;
 }
 
-@media only screen and (min-height: 728px){
+@media only screen and (min-width: 660px){
   #controls{
-      flex-direction: row;
-      right: unset;
+      flex-direction: column;
+      right: 30px;
   }
 
   .rules_button_container {
-    margin-top: unset;
-    margin-left: 20%;
+    margin-top: 40px;
+    margin-left: unset;
+  }
+}
+
+
+@media only screen and (max-width: 385px){
+  .score_container{
+    width: 100px;
+    margin-left: 10px;
+  }
+
+  .logo_container:nth-of-type(2){
+    width: 120px;
   }
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ComputerPickedContext } from './main_page(hard)';
+import { ComputerPickedContext } from './MainPageHard';
 
 let arrayOfIconsEasy = ['scissors', 'paper', 'rock'];
 let arrayOfIconsHard = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
@@ -7,16 +7,34 @@ let arrayOfIconsHard = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
 let tempComputerPick, computerPick;
 
 export default function Computer_pick_hard (props) {
-    const [[computerPicked, setComputerPicked], [iconHard, setIconHard], [transformValueComputer, setTransformValueComputer], 
+    const [[computerPicked, setComputerPicked], [setIconHard], [setTransformValueComputer], 
     [transformIconValueComputer, setTransformIconValueComputer], 
-    [moveRightMainGame, setMoveRightMainGame],
-    [moveRightMainGameTwo, setMoveRightMainGameTwo],
-    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName], [difficulty, setDifficulty] ] = useContext(ComputerPickedContext);
+    [setMoveRightMainGame],
+    [setMoveRightMainGameTwo],
+    [result, setResult], [startGame], [chosenClassName], [difficulty] ] = useContext(ComputerPickedContext);
 
     const [arrayOfIcons, setArrayOfIcons] = useState(undefined)
 
     useEffect(() => {
-        if (computerPicked != undefined){
+        const settingTransformValue = (a, b, c, d) => {
+            if (difficulty === 'easy'){
+                setTransformValueComputer(a);
+                setTransformIconValueComputer(b);
+            } else if (difficulty === 'hard'){
+                setTransformValueComputer(c);
+                setTransformIconValueComputer(d);
+            }
+        }
+
+        const settingMoveRightMainGameTwo = (easy, hard) => {
+            if (difficulty === 'easy'){
+                setMoveRightMainGameTwo(easy);
+            } else if (difficulty === 'hard'){
+                setMoveRightMainGameTwo(hard);
+            }
+        }
+
+        if (computerPicked !== undefined){
             switch (computerPicked){
                 case 'lizard':
                     settingTransformValue('unset', 'unset', 'rotateZ(235.5deg)', 'rotateZ(-235.5deg)')
@@ -38,48 +56,31 @@ export default function Computer_pick_hard (props) {
                     settingTransformValue('rotateZ(38.5deg)', 'rotateZ(-38.5deg)', 'rotateZ(0deg)', 'rotateZ(0deg)');
                     settingMoveRightMainGameTwo('-15px', '0px');
                     break;
+                default:
+                    return;
             }
         }
     }, [computerPicked]);
 
     useEffect(() => {
-        if (startGame != undefined){
+        if (startGame !== undefined){
             beginGame(startGame)
         }
     }, [startGame]);
 
     useEffect(() => {
-        if (difficulty == 'easy'){
+        if (difficulty === 'easy'){
             setArrayOfIcons(arrayOfIconsEasy);
-        } else if (difficulty == 'hard'){
+        } else if (difficulty === 'hard'){
             setArrayOfIcons(arrayOfIconsHard);
         }
     }, [difficulty]);
 
-    const settingMoveRightMainGameTwo = (easy, hard) => {
-        if (difficulty == 'easy'){
-            setMoveRightMainGameTwo(easy);
-        } else if (difficulty == 'hard'){
-            setMoveRightMainGameTwo(hard);
-        }
-    }
-
     const settingMoveRightMainGame = (easy, hard) => {
-        if (difficulty == 'easy'){
+        if (difficulty === 'easy'){
             setMoveRightMainGame(easy);
-        } else if (difficulty == 'hard'){
+        } else if (difficulty === 'hard'){
             setMoveRightMainGame(hard);
-        }
-        console.log(result)
-    }
-
-    const settingTransformValue = (a, b, c, d) => {
-        if (difficulty == 'easy'){
-            setTransformValueComputer(a);
-            setTransformIconValueComputer(b);
-        } else if (difficulty == 'hard'){
-            setTransformValueComputer(c);
-            setTransformIconValueComputer(d);
         }
     }
 
@@ -90,7 +91,7 @@ export default function Computer_pick_hard (props) {
 
     const computerPicks = (userValue) => {
         tempComputerPick = arrayOfIcons[Math.floor(Math.random()*arrayOfIcons.length)];
-        if (tempComputerPick == computerPick){
+        if (tempComputerPick === computerPick){
             tempComputerPick = arrayOfIcons[Math.floor(Math.random()*arrayOfIcons.length)];
             computerPick = tempComputerPick;
         } else {
@@ -117,13 +118,15 @@ export default function Computer_pick_hard (props) {
             case 'paper':
                 Paper(b);
                 break;
+            default:
+                return;
         }
     }
 
     const Lizard = (computerPick) => {
         switch(computerPick){
             case 'lizard':
-                setResult("You draw")
+                setResult("Draw")
                 break;
             case 'spock':
                 setResult("You win")
@@ -137,6 +140,8 @@ export default function Computer_pick_hard (props) {
             case 'paper':
                 setResult("You win")
                 break;
+            default:
+                return;
         }
         settingMoveRightMainGame('unset', '-10px');
     }
@@ -147,7 +152,7 @@ export default function Computer_pick_hard (props) {
                 setResult("You lose")
                 break;
             case 'spock':
-                setResult("You draw")
+                setResult("Draw")
                 break;
             case 'scissors':
                 setResult("You win")
@@ -158,6 +163,8 @@ export default function Computer_pick_hard (props) {
             case 'paper':
                 setResult("You lose")
                 break;
+            default:
+                return;
         }
         settingMoveRightMainGame('unset', '0px');
     }
@@ -171,7 +178,7 @@ export default function Computer_pick_hard (props) {
                 setResult("You lose")
                 break;
             case 'scissors':
-                setResult("You draw")
+                setResult("Draw")
                 break;
             case 'rock':
                 setResult("You lose")
@@ -179,6 +186,8 @@ export default function Computer_pick_hard (props) {
             case 'paper':
                 setResult("You win")
                 break;
+            default:
+                return;
         }
         settingMoveRightMainGame('-20px', '15px');
     }
@@ -195,11 +204,13 @@ export default function Computer_pick_hard (props) {
                 setResult("You win")
                 break;
             case 'rock':
-                setResult("You draw")
+                setResult("Draw")
                 break;
             case 'paper':
                 setResult("You lose")
                 break;
+            default:
+                return;
         }
         settingMoveRightMainGame('40px', '-10px');
     }
@@ -219,17 +230,19 @@ export default function Computer_pick_hard (props) {
                 setResult("You win")
                 break;
             case 'paper':
-                setResult("You draw")
+                setResult("Draw")
                 break;
+            default:
+                return;
         }
         settingMoveRightMainGame('-15px', '0px');
     }
 
     return(
         <>
-            <div className={['game_icon_container_computer', chosenClassName].join(' ')} style={{display: (computerPicked ==  props.id || computerPicked == undefined) ? 'flex' : 'none', 
-            boxShadow: (result == 'You lose') ? '0 0 0 25px #293251, 0 0 0 50px #232c4b, 0 0 0 70px #1e2748' : 'unset'}}>
-                <div className='shadow' style={{transform: (computerPicked == props.id) ? transformIconValueComputer : 'unset'}}>                           
+            <div className={['game_icon_container_computer', chosenClassName].join(' ')} style={{display: (computerPicked ===  props.id || computerPicked === undefined) ? 'flex' : 'none', 
+            boxShadow: (result === 'You lose') ? '0 0 0 25px #293251, 0 0 0 50px #232c4b, 0 0 0 70px #1e2748' : 'unset'}}>
+                <div className='shadow' style={{transform: (computerPicked === props.id) ? transformIconValueComputer : 'unset'}}>                           
                     <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                     <div className='inner_circle'></div>
                 </div>

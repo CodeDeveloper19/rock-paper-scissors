@@ -1,16 +1,17 @@
-import React, { useState, useEffect, createContext  } from 'react';
-import Rules from './rules'
-import logo from '../images/logo-bonus.svg';
+import React, { useState, useEffect, createContext } from 'react';
+import Rules from './Rules'
+import logoHard from '../images/logo-bonus.svg';
+import logoEasy from '../images/logo.svg';
 import pentagon from '../images/bg-pentagon.svg';
 import scissors from '../images/icon-scissors.svg';
 import paper from '../images/icon-paper.svg';
 import rock from '../images/icon-rock.svg';
 import lizard from '../images/icon-lizard.svg';
 import spock from '../images/icon-spock.svg';
-import User_pick from './user_pick';
-import Computer_pick from './computer_pick';
-import Easy_page from './easy_page';
-import Result_box from './result_box';
+import UserPick from './UserPick';
+import ComputerPick from './ComputerPick';
+import EasyPage from './EasyPage';
+import ResultBox from './ResultBox';
 
 const initalScore = '0';
 
@@ -53,7 +54,14 @@ export const RulesContext = createContext();
 export const EasyContext = createContext();
 export const ResultBoxContext = createContext();
 
-export default function Main_page() {
+const getWindowSize = () => {
+    const {innerWidth, innerHeight} = window;
+    return {innerWidth, innerHeight};
+}
+
+export default function MainPageHard() {
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+
     const [scoreHard, setScoreHard] = useState(initalScore);
     const [scoreEasy, setScoreEasy] = useState(initalScore);
     const [showRules, setShowRules] = useState(false);
@@ -64,7 +72,7 @@ export default function Main_page() {
     const [chosenClassName, setChosenClassName] = useState(undefined);
     const [startGame, setStartGame] = useState(undefined);
     const [computerPicked, setComputerPicked] = useState(undefined);
-    const [difficulty, setDifficulty] = useState('hard');
+    const [difficulty, setDifficulty] = useState('easy');
     const [transformValue, setTransformValue] = useState(undefined);
     const [transformValueComputer, setTransformValueComputer] = useState(undefined);
     const [transformIconValue, setTransformIconValue] = useState(undefined);
@@ -77,31 +85,68 @@ export default function Main_page() {
     useEffect(() => {
         const playerScoreHard = localStorage.getItem('playerScoreHard');
         const playerScoreEasy = localStorage.getItem('playerScoreEasy');
-        if (playerScoreHard != null){
+        if (playerScoreHard !== null){
             setScoreHard(parseInt(playerScoreHard));
         } 
-        if (playerScoreEasy != null){
+        if (playerScoreEasy !== null){
             setScoreEasy(parseInt(playerScoreEasy));
         }
     }, [])
 
     useEffect(() => {
-        if (typeof(scoreHard) != 'string'){
+        const handleWindowResize = () => {
+            setWindowSize(getWindowSize());
+        }
+      
+        window.addEventListener('resize', handleWindowResize);
+      
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, [])
+
+    useEffect(() => {
+        if (typeof(scoreHard) !== 'string'){
             localStorage.setItem('playerScoreHard', scoreHard);
         } 
-        if (typeof(scoreEasy) != 'string'){
+        if (typeof(scoreEasy) !== 'string'){
             localStorage.setItem('playerScoreEasy', scoreEasy);
         }
     }, [scoreHard, scoreEasy])
 
     useEffect(() => {
-        if (result != undefined && difficulty == 'hard'){
+        const minusOrAddHard = () => {
+            if (result === 'You win' && scoreHard <= 100){
+                setScoreHard(scoreHard + 1);
+            } else if (result === 'You lose' && scoreHard !== 0){
+                setScoreHard(scoreHard - 1);
+            }
+        }
+    
+        const minusOrAddEasy = () => {
+            if (result === 'You win' && scoreEasy <= 100){
+                setScoreEasy(scoreEasy + 1);
+            } else if (result === 'You lose' && scoreEasy !== 0){
+                setScoreEasy(scoreEasy - 1);
+            }
+        }
+
+        if (result !== undefined && difficulty === 'hard'){
             minusOrAddHard();
-        } else if (result != undefined && difficulty == 'easy'){
+        } else if (result !== undefined && difficulty === 'easy'){
             minusOrAddEasy();
         }
         setResultDisplay(result);
-    }, [result]);
+    }, [result]); 
+
+    // useEffect(() => {
+    //     if (windowSize.innerWidth >= 450 && result !== undefined){        
+    //         const timer = setTimeout(() => {
+    //             setMoveRightMainGame('50px');
+    //         }, 500);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [result])
 
     useEffect(() => {
         refreshGame();
@@ -112,26 +157,10 @@ export default function Main_page() {
             refreshGame();
             setResetGame(false)
         }
-    }, [resetGame])
+    }, [resetGame]);
 
     const setShowRulesFunction = () => {
         setShowRules(false);
-    }
-
-    const minusOrAddHard = () => {
-        if (result == 'You win' && scoreHard <= 100){
-            setScoreHard(scoreHard + 1);
-        } else if (result == 'You lose' && scoreHard != 0){
-            setScoreHard(scoreHard - 1);
-        }
-    }
-
-    const minusOrAddEasy = () => {
-        if (result == 'You win' && scoreEasy <= 100){
-            setScoreEasy(scoreEasy + 1);
-        } else if (result == 'You lose' && scoreEasy != 0){
-            setScoreEasy(scoreEasy - 1);
-        }
     }
 
     const refreshGame = () => {
@@ -148,17 +177,34 @@ export default function Main_page() {
         setTransformValueComputer(undefined);
     }
 
+    const resetIndividualScore = () => {
+        if (difficulty === 'hard'){
+            setScoreHard(0); 
+            localStorage.setItem('playerScoreHard', 0);
+        } else {
+            setScoreEasy(0); 
+            localStorage.setItem('playerScoreEasy', 0);
+        }
+    }
+
     return (
         <>
         <div className='main_container'>
             <div className='main_title'>
-                <div className='logo_container'>
-                    <img src={logo} className='logo' alt='logo for the game'/>
+                <div className='logo_container_screen' style={{width: (difficulty === 'hard') ? '95px' : '130px'}}>
+                    <div className='logo_container_fit' style={{right: (difficulty === 'hard') ? '0px' : '95px'}}>
+                        <div className='logo_container'>
+                            <img src={logoHard} className='logo' alt='logo for the game'/>
+                        </div>
+                        <div className='logo_container'>
+                            <img src={logoEasy} className='logo' alt='logo for the game'/>
+                        </div>
+                    </div>
                 </div>
                 <div className='score_container'>
                     <p>SCORE</p>
                     <div className='score_screen'>
-                        <div className='score_container_fit' style={{right : (difficulty == 'hard') ? '0px' : '40px'}}>
+                        <div className='score_container_fit' style={{right : (difficulty === 'hard') ? '0px' : '40px'}}>
                             <div className='score'>
                                 <p>{scoreHard}</p>
                             </div>
@@ -171,79 +217,76 @@ export default function Main_page() {
             </div>
             <div id='difficulty_level'>
                 <p>Easy</p>
-                <div id='slider' style={{boxShadow: (difficulty == 'easy' ? 'unset' : '1px 1px 10px 5px #fff')}}>
+                <div id='slider' style={{boxShadow: (difficulty === 'easy' ? 'unset' : '1px 1px 10px 5px #fff')}}>
                     <div id='slider_ball'
                     onClick={() => {
-                        if (difficulty == 'hard'){
+                        if (difficulty === 'hard'){
                             setDifficulty('easy');
                         } else {
                             setDifficulty('hard');
                         }
                     }}
-                    style={{left: (difficulty == 'easy') ? '5px' : '35px'}}
+                    style={{left: (difficulty === 'easy') ? '5px' : '35px'}}
                     ></div>
                 </div>
                 <p>Hard</p>
             </div>
             <div className='container_screen'>
-                <div className='overall_container' style={{right: (difficulty == 'easy' ? '500px' : '0px')}}>
+                <div className='overall_container' style={{right: (difficulty === 'easy' ? '500px' : '0px')}}>
                     <div className='general_container_hard'>
                         <div className='main_game_container'>
-                            <main className='main_game' style={{transform: (iconHard == 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset',                
+                            <main className='main_game' style={{transform: (iconHard === 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset',                
                             right: (result) ? moveRightMainGame : 'unset'}}>
                             <img src={pentagon} 
                             alt="pentagon skeleton for the game element icons" id='pentagon' 
-                            style={{display: (iconHard == undefined) ? 'flex' : 'none'}}/>
-                                <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
-                                    [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty],
-                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result, setResult] ]}>
+                            style={{display: (iconHard === undefined) ? 'flex' : 'none'}}/>
+                                <UserPickedContext.Provider value={ [ [setTransformValue], [transformIconValue, setTransformIconValue], 
+                                    [iconEasy, setIconEasy], [setStartGame], [difficulty],
+                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result]]}>
                                     {
                                         data.map((data) => {
-                                            return <User_pick key={data.id} {...data}/>
+                                            return <UserPick key={data.id} {...data}/>
                                         })
                                     }
                                 </UserPickedContext.Provider>
                             </main>
-                            <div className='main_game_two' style={{transform: (computerPicked != undefined) ? transformValueComputer : 'unset', 
-                            zIndex: (computerPicked != undefined) ? '0' : '-1',
+                            <div className='main_game_two' style={{transform: (computerPicked !== undefined) ? transformValueComputer : 'unset', 
+                            zIndex: (computerPicked !== undefined) ? '0' : '-1',
                             left: (result) ? moveRightMainGameTwo : 'unset',
-                            display: (computerPicked == undefined) ? 'none' : 'flex'}}>
+                            display: (computerPicked === undefined) ? 'none' : 'flex'}}>
                                 <ComputerPickedContext.Provider value = {[[computerPicked, setComputerPicked], 
-                                    [iconHard, setIconHard], 
-                                    [transformValueComputer, setTransformValueComputer], 
+                                    [setIconHard], 
+                                    [setTransformValueComputer], 
                                     [transformIconValueComputer, setTransformIconValueComputer], 
-                                    [moveRightMainGame, setMoveRightMainGame],
-                                    [moveRightMainGameTwo, setMoveRightMainGameTwo],
-                                    [result, setResult], [startGame, setStartGame], [chosenClassName, setChosenClassName], [difficulty, setDifficulty]]}>
+                                    [setMoveRightMainGame],
+                                    [setMoveRightMainGameTwo],
+                                    [result, setResult], [startGame], [chosenClassName], [difficulty]]}>
                                         {
                                             data.map((data) => {
-                                                return <Computer_pick key={data.id} {...data}/>
+                                                return <ComputerPick key={data.id} {...data}/>
                                             })
                                         }
                                 </ComputerPickedContext.Provider>
                             </div>
                         </div>
-                        <ResultBoxContext.Provider value={[ [computerPicked, setComputerPicked], [resultDisplay, setResultDisplay], [result, setResult], [resetGame, setResetGame] ]}>
-                            <Result_box />
+                        <ResultBoxContext.Provider value={[ [computerPicked], [resultDisplay], [setResetGame] ]}>
+                            <ResultBox />
                         </ResultBoxContext.Provider>
                     </div>
                     <UserPickedContext.Provider value={ [ [transformValue, setTransformValue], [transformIconValue, setTransformIconValue], 
-                        [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty, setDifficulty], 
+                        [iconEasy, setIconEasy], [startGame, setStartGame], [difficulty], 
                         [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon],
                         [transformValueComputer, setTransformValueComputer], 
                         [transformIconValueComputer, setTransformIconValueComputer], 
                         [computerPicked, setComputerPicked], [moveRightMainGame, setMoveRightMainGame],
-                        [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], [resultDisplay, setResultDisplay], [resetGame, setResetGame] ]}>
-                        <Easy_page />
+                        [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], [resultDisplay, setResultDisplay], [setResetGame] ]}>
+                        <EasyPage />
                     </UserPickedContext.Provider>
                 </div>
             </div>
             <div id='controls'>
                 <button className='reset_button_container' onClick={() => {
-                    setScoreHard(0);
-                    setScoreEasy(0);
-                    localStorage.setItem('playerScoreHard', 0);
-                    localStorage.setItem('playerScoreEasy', 0);
+                    resetIndividualScore();
                     }}>
                     RESET
                 </button>
