@@ -3,6 +3,8 @@ import { ComputerPickedContext } from './MainPageHard';
 
 let arrayOfIconsEasy = ['scissors', 'paper', 'rock'];
 let arrayOfIconsHard = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
+let smallBoxShadow = '0 0 0 10px #293251, 0 0 0 15px #232c4b, 0 0 0 25px #1e2748';
+let largeBoxShadow = '0 0 0 25px #293251, 0 0 0 50px #232c4b, 0 0 0 75px #1e2748';
 
 let tempComputerPick, computerPick;
 
@@ -11,9 +13,23 @@ export default function Computer_pick_hard (props) {
     [transformIconValueComputer, setTransformIconValueComputer], 
     [setMoveRightMainGame],
     [setMoveRightMainGameTwo],
-    [result, setResult], [startGame], [chosenClassName], [difficulty] ] = useContext(ComputerPickedContext);
+    [result, setResult], [startGame], [chosenClassName], [difficulty], [canMove], [canIncreaseIcon, setCanIncreaseIcon] ] = useContext(ComputerPickedContext);
 
-    const [arrayOfIcons, setArrayOfIcons] = useState(undefined)
+    const [arrayOfIcons, setArrayOfIcons] = useState(undefined);
+    const [boxShadowValue, setBoxShadowValue] = useState(largeBoxShadow);
+
+    useEffect(() => {
+        if (canMove){
+            setBoxShadowValue(smallBoxShadow);
+            const timer = setTimeout(() => {
+                setCanIncreaseIcon(true);
+            }, 1000);
+            return () => {clearTimeout(timer)};
+        } else {
+            setBoxShadowValue(largeBoxShadow);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [canMove])   
 
     useEffect(() => {
         const settingTransformValue = (a, b, c, d) => {
@@ -60,12 +76,14 @@ export default function Computer_pick_hard (props) {
                     return;
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [computerPicked]);
 
     useEffect(() => {
         if (startGame !== undefined){
             beginGame(startGame)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startGame]);
 
     useEffect(() => {
@@ -241,7 +259,8 @@ export default function Computer_pick_hard (props) {
     return(
         <>
             <div className={['game_icon_container_computer', chosenClassName].join(' ')} style={{display: (computerPicked ===  props.id || computerPicked === undefined) ? 'flex' : 'none', 
-            boxShadow: (result === 'You lose') ? '0 0 0 25px #293251, 0 0 0 50px #232c4b, 0 0 0 70px #1e2748' : 'unset'}}>
+            boxShadow: (result === 'You lose') ? boxShadowValue : 'unset',
+            transform: (canIncreaseIcon) ? 'scale(1.3)' : 'scale(1)'}}>
                 <div className='shadow' style={{transform: (computerPicked === props.id) ? transformIconValueComputer : 'unset'}}>                           
                     <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" className='game_icon'/>
                     <div className='inner_circle'></div>

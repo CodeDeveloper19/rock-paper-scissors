@@ -35,21 +35,21 @@ export default function EasyPage() {
     [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [transformValueComputer, setTransformValueComputer], 
     [transformIconValueComputer, setTransformIconValueComputer], [computerPicked, setComputerPicked], [moveRightMainGame, setMoveRightMainGame],
     [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], 
-    [resultDisplay, setResultDisplay], [setResetGame]] = useContext(UserPickedContext);
+    [resultDisplay], [setResetGame], [canMove], [canIncreaseIcon, setCanIncreaseIcon]] = useContext(UserPickedContext);
 
     return (
         <>
         <div className='general_container_easy'>
             <div className='main_game_container'>
                 <main className='main_game'
-                style={{transform: (iconEasy === 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset', right: (result) ? moveRightMainGame : 'unset'}}>
+                style={{transform: (iconEasy === 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset', right: (moveRightMainGame) ? moveRightMainGame : 'unset'}}>
                     <img src={triangle}
                         alt="pentagon/triangle skeleton for the game element icons" id={(difficulty === 'easy') ? 'triangle' : 'pentagon'} 
                         style={{display: (iconEasy === undefined) ? 'flex' : 'none'}}>
                     </img>
                     <UserPickedContext.Provider value={ [ [setTransformValue], [transformIconValue, setTransformIconValue], 
                         [iconEasy, setIconEasy], [setStartGame], [difficulty],
-                         [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result] ]}>
+                         [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result], [canMove], [canIncreaseIcon, setCanIncreaseIcon] ]}>
                         {
                             data.map((data) => {
                                 return <UserPick key={data.id} {...data}/>
@@ -59,7 +59,7 @@ export default function EasyPage() {
                 </main>
                 <div className='main_game_two' style={{transform: (computerPicked !== undefined) ? transformValueComputer : 'unset', 
                 zIndex: (computerPicked !== undefined) ? '0' : '-1',
-                left: (result) ? moveRightMainGameTwo : 'unset',
+                left: (moveRightMainGameTwo) ? moveRightMainGameTwo : 'unset',
                 display: (computerPicked === undefined) ? 'none' : 'flex'}}>
                     <ComputerPickedContext.Provider value = {[[computerPicked, setComputerPicked], 
                     [setIconHard], 
@@ -67,7 +67,7 @@ export default function EasyPage() {
                     [transformIconValueComputer, setTransformIconValueComputer], 
                     [setMoveRightMainGame],
                     [setMoveRightMainGameTwo],
-                    [result, setResult], [startGame], [chosenClassName], [difficulty] ]}>
+                    [result, setResult], [startGame], [chosenClassName], [difficulty], [canMove], [canIncreaseIcon, setCanIncreaseIcon] ]}>
                         {
                             data.map((data) => {
                                 return <ComputerPick key={data.id} {...data}/>

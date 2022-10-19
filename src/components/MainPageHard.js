@@ -81,6 +81,8 @@ export default function MainPageHard() {
     const [moveRightMainGameTwo, setMoveRightMainGameTwo] = useState(undefined);
     const [resultDisplay, setResultDisplay] = useState(undefined);
     const [resetGame, setResetGame] = useState(false);
+    const [canMove, setCanMove] = useState(false);
+    const [canIncreaseIcon, setCanIncreaseIcon] = useState(false);
 
     useEffect(() => {
         const playerScoreHard = localStorage.getItem('playerScoreHard');
@@ -137,16 +139,30 @@ export default function MainPageHard() {
             minusOrAddEasy();
         }
         setResultDisplay(result);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result]); 
 
-    // useEffect(() => {
-    //     if (windowSize.innerWidth >= 450 && result !== undefined){        
-    //         const timer = setTimeout(() => {
-    //             setMoveRightMainGame('50px');
-    //         }, 500);
-    //         return () => clearTimeout(timer);
-    //     }
-    // }, [result])
+    useEffect(() => {
+        if (windowSize.innerWidth >= 450 && result !== undefined){      
+            setCanMove(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [result]);
+
+    useEffect(() => {
+        if (canMove === true){
+            let prevPosition = moveRightMainGame.split("p");
+            let prevPositionTwo = moveRightMainGameTwo.split("p");
+            const newPosition = [parseInt(prevPosition[0]) + 30, 'px'].join('');
+            const newPositionTwo = [parseInt(prevPositionTwo[0]) + 30, 'px'].join('');
+            const timer = setTimeout(() => {
+                setMoveRightMainGame(newPosition);
+                setMoveRightMainGameTwo(newPositionTwo);
+            }, 500);
+            return () => {clearTimeout(timer)};
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [canMove])
 
     useEffect(() => {
         refreshGame();
@@ -169,6 +185,8 @@ export default function MainPageHard() {
         setStartGame(undefined);
         setIconEasy(undefined);
         setIconHard(undefined);
+        setCanMove(false);
+        setCanIncreaseIcon(false);
         setMoveRightMainGame(undefined);
         setMoveRightMainGameTwo(undefined);
         setTransformIconValue(undefined);
@@ -236,13 +254,13 @@ export default function MainPageHard() {
                     <div className='general_container_hard'>
                         <div className='main_game_container'>
                             <main className='main_game' style={{transform: (iconHard === 'lizard', 'rock', 'paper', 'scissors') ? transformValue : 'unset',                
-                            right: (result) ? moveRightMainGame : 'unset'}}>
+                            right: (moveRightMainGame) ? moveRightMainGame : 'unset'}}>
                             <img src={pentagon} 
                             alt="pentagon skeleton for the game element icons" id='pentagon' 
                             style={{display: (iconHard === undefined) ? 'flex' : 'none'}}/>
                                 <UserPickedContext.Provider value={ [ [setTransformValue], [transformIconValue, setTransformIconValue], 
                                     [iconEasy, setIconEasy], [setStartGame], [difficulty],
-                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result]]}>
+                                     [iconHard, setIconHard], [chosenClassName, setChosenClassName], [chosenIcon, setChosenIcon], [result], [canMove], [canIncreaseIcon, setCanIncreaseIcon]]}>
                                     {
                                         data.map((data) => {
                                             return <UserPick key={data.id} {...data}/>
@@ -252,7 +270,7 @@ export default function MainPageHard() {
                             </main>
                             <div className='main_game_two' style={{transform: (computerPicked !== undefined) ? transformValueComputer : 'unset', 
                             zIndex: (computerPicked !== undefined) ? '0' : '-1',
-                            left: (result) ? moveRightMainGameTwo : 'unset',
+                            left: (moveRightMainGameTwo) ? moveRightMainGameTwo : 'unset',
                             display: (computerPicked === undefined) ? 'none' : 'flex'}}>
                                 <ComputerPickedContext.Provider value = {[[computerPicked, setComputerPicked], 
                                     [setIconHard], 
@@ -260,7 +278,7 @@ export default function MainPageHard() {
                                     [transformIconValueComputer, setTransformIconValueComputer], 
                                     [setMoveRightMainGame],
                                     [setMoveRightMainGameTwo],
-                                    [result, setResult], [startGame], [chosenClassName], [difficulty]]}>
+                                    [result, setResult], [startGame], [chosenClassName], [difficulty], [canMove], [canIncreaseIcon, setCanIncreaseIcon]]}>
                                         {
                                             data.map((data) => {
                                                 return <ComputerPick key={data.id} {...data}/>
@@ -279,7 +297,7 @@ export default function MainPageHard() {
                         [transformValueComputer, setTransformValueComputer], 
                         [transformIconValueComputer, setTransformIconValueComputer], 
                         [computerPicked, setComputerPicked], [moveRightMainGame, setMoveRightMainGame],
-                        [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], [resultDisplay, setResultDisplay], [setResetGame] ]}>
+                        [moveRightMainGameTwo, setMoveRightMainGameTwo], [result, setResult], [resultDisplay], [setResetGame], [canMove], [canIncreaseIcon, setCanIncreaseIcon] ]}>
                         <EasyPage />
                     </UserPickedContext.Provider>
                 </div>

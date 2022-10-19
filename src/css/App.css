@@ -68,7 +68,7 @@ body{
   position: absolute;
   bottom: 30px;
   height: fit-content;
-  display: flex;
+  display: none;
   flex-direction: row;
   right: unset;
 }
@@ -176,6 +176,7 @@ body{
   transform: scale(1);
   border: none;
   outline: none;
+  transition: transform var(--transition-duration) linear;
 }
 
 .game_icon_container:hover{
@@ -290,7 +291,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  transition: transform var(--transition-duration) linear, right var(--transition-duration) linear;
+  transition: all var(--transition-duration) linear;
 }
 
 .main_game_two{
