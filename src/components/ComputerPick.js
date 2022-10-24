@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ComputerPickedContext } from './MainPage.js';
+import { ComputerPickedContext } from './MainPage';
 
 let arrayOfIconsEasy = ['scissors', 'paper', 'rock'];
 let arrayOfIconsHard = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
 let smallBoxShadow = '0 0 0 10px #293251, 0 0 0 15px #232c4b, 0 0 0 25px #1e2748';
-let largeBoxShadow = '0 0 0 25px #293251, 0 0 0 50px #232c4b, 0 0 0 75px #1e2748';
+let largeBoxShadow = '0 0 0 15px #293251, 0 0 0 35px #232c4b, 0 0 0 60px #1e2748';
 
 let tempComputerPick, computerPick;
 
