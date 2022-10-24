@@ -221,8 +221,8 @@ export default function MainPage() {
             </header>
             <div id='difficulty_level'>
                 <p>Easy</p>
-                <div id='slider' aria-label='difficulty switch' style={{boxShadow: (difficulty === 'easy' ? 'unset' : '1px 1px 10px 5px #fff')}}>
-                    <div id='slider_ball'
+                <div id='slider' style={{boxShadow: (difficulty === 'easy' ? 'unset' : '1px 1px 10px 5px #fff')}}>
+                    <button id='slider_ball'
                     onClick={() => {
                         if (difficulty === 'hard'){
                             setDifficulty('easy');
@@ -232,7 +232,7 @@ export default function MainPage() {
                     }}
                     aria-label={(difficulty === 'easy') ? 'easy level' : 'hard level'}
                     style={{left: (difficulty === 'easy') ? '5px' : '35px'}}
-                    ></div>
+                    ></button>
                 </div>
                 <p>Hard</p>
             </div>
