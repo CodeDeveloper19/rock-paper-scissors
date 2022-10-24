@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ResultBoxContext } from './MainPageHard';
+import { ResultBoxContext } from './MainPage.js';
 
 export default function ResultBox() {
 

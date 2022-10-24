@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState} from 'react';
-import { UserPickedContext } from './MainPageHard';
+import { UserPickedContext } from './MainPage.js';
 
 let userInput;
 let smallBoxShadow = '0 0 0 10px #293251, 0 0 0 15px #232c4b, 0 0 0 25px #1e2748';
@@ -53,12 +53,13 @@ export default function UserPick (props) {
             setStartGame(userInput); 
             setTransformValue(props.rotation); 
             setTransformIconValue(props.antiRotation)}} 
+            aria-label={`You pick ${userInput}`}
             style={{display: (chosenIcon ===  props.id || chosenIcon === undefined) ? 'flex' : 'none',
             boxShadow: (result === 'You win') ? boxShadowValue : 'unset', 
             transform: (canIncreaseIcon) ? 'scale(1.3)' : 'scale(1)'}}>
-                <div className='shadow' style={{transform: (chosenIcon === props.id) ? transformIconValue : 'unset'}}>                           
-                    <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" className='game_icon'/>
-                    <div className='inner_circle'></div>
+                <div className='shadow' aria-hidden='true' style={{transform: (chosenIcon === props.id) ? transformIconValue : 'unset'}}>                           
+                    <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" aria-hidden='true' className='game_icon'/>
+                    <div className='inner_circle' aria-hidden='true'></div>
                 </div>
             </div>
         </>

@@ -68,7 +68,7 @@ body{
   position: absolute;
   bottom: 30px;
   height: fit-content;
-  display: none;
+  display: flex;
   flex-direction: row;
   right: unset;
 }
@@ -140,7 +140,7 @@ body{
   transition: transform var(--transition-duration) linear;
 }
 
-.score_container p{
+.score_container h1{
   color: var(--blue-shade);
   font-size: 13px;
   font-weight: 700;
@@ -160,7 +160,7 @@ body{
   height: 100%;
 }
 
-#pentagon, #triangle{
+.pentagon, .triangle{
   width: 50%;
   height: 70%;
   margin-bottom: 40px;
@@ -267,7 +267,7 @@ body{
   top: 140px;
 }
 
-.general_container_hard, .general_container_easy{
+.general_container{
   height: 334px;
   width: fit-content;
   min-width: 500px;
@@ -334,6 +334,22 @@ body{
   box-shadow: 1px 1px 10px 5px #fff;
 }
 
+.you_pick, .house_pick{
+  position: absolute;
+  color: white;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  top: 40px;
+  left: 35px;
+  text-transform: uppercase;
+}
+
+.house_pick{
+  left: unset;
+  right: 0;
+}
+
 #difficulty_level{
   height: 90px;
   width: 180px;
@@ -392,12 +408,29 @@ body{
   #controls{
       flex-direction: column;
       right: 30px;
+      bottom: 30px;
+      top: unset;
   }
 
   .rules_button_container {
     margin-top: 40px;
     margin-left: unset;
   }
+}
+
+@media only screen and (max-width: 400px){
+  .you_pick, .house_pick{
+    font-size: 15px;
+  }
+
+  .you_pick{
+    left: 99px !important;
+  }
+
+  .house_pick{
+    right: 70px !important;
+  }
+  
 }
 
 

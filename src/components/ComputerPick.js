@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ComputerPickedContext } from './MainPageHard';
+import { ComputerPickedContext } from './MainPage.js';
 
 let arrayOfIconsEasy = ['scissors', 'paper', 'rock'];
 let arrayOfIconsHard = ['scissors', 'paper', 'rock', 'lizard', 'spock'];
@@ -258,12 +258,12 @@ export default function Computer_pick_hard (props) {
 
     return(
         <>
-            <div className={['game_icon_container_computer', chosenClassName].join(' ')} style={{display: (computerPicked ===  props.id || computerPicked === undefined) ? 'flex' : 'none', 
+            <div className={['game_icon_container_computer', chosenClassName].join(' ')} aria-label={`Computer picked ${computerPick}`} style={{display: (computerPicked ===  props.id || computerPicked === undefined) ? 'flex' : 'none', 
             boxShadow: (result === 'You lose') ? boxShadowValue : 'unset',
             transform: (canIncreaseIcon) ? 'scale(1.3)' : 'scale(1)'}}>
-                <div className='shadow' style={{transform: (computerPicked === props.id) ? transformIconValueComputer : 'unset'}}>                           
-                    <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" className='game_icon'/>
-                    <div className='inner_circle'></div>
+                <div className='shadow' aria-hidden='true' style={{transform: (computerPicked === props.id) ? transformIconValueComputer : 'unset'}}>                           
+                    <img src={props.imageUrl} alt="pentagon skeleton for the game element icons" aria-hidden='true' className='game_icon'/>
+                    <div className='inner_circle' aria-hidden='true'></div>
                 </div>
             </div>
         </>

@@ -40,7 +40,7 @@
     align-items: center;
 }
 
-.rules_title h1{
+.rules_title h2{
     font-size: 28px;
     color: hsl(229, 25%, 31%);
 }
@@ -48,6 +48,9 @@
 .close_icon{
     height: 16px;
     width: 16px;
+    outline: none;
+    border: none;
+    background-color: transparent;
 }
 
 .close_icon:hover{
